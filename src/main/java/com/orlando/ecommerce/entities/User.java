@@ -17,7 +17,7 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
 
     @Column(unique = true)
@@ -25,7 +25,11 @@ public class User {
     private String phone;
     private LocalDate birthDate;
     private String password;
-    private String[] roles;
+    @ManyToMany
+    @JoinTable(name = "tb_user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
     private Set<Order> orders = new HashSet<>();
@@ -42,5 +46,18 @@ public class User {
     @Override
     public int hashCode() {
         return Long.hashCode(id);
+    }
+
+    public void addRole(Role role){
+        roles.add(role);
+    }
+
+    public boolean hasRole(String roleName){
+        for (Role role: roles){
+            if (roleName.equals(role.getAuthority())){
+                return true;
+            }
+        }
+        return false;
     }
 }
