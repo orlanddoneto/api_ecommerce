@@ -1,6 +1,7 @@
 package com.orlando.ecommerce.controllers;
 
 import com.orlando.ecommerce.entities.DTOs.ProductDTO;
+import com.orlando.ecommerce.entities.DTOs.ProductMinDTO;
 import com.orlando.ecommerce.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductDTO>> getAll(Pageable pageable) {
-        Page<ProductDTO> dtos = productService.findAll(pageable);
+    public ResponseEntity<Page<ProductMinDTO>> getAll(Pageable pageable) {
+        Page<ProductMinDTO> dtos = productService.findAll(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 

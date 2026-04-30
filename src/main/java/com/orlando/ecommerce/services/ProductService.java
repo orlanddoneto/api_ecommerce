@@ -1,6 +1,7 @@
 package com.orlando.ecommerce.services;
 
 import com.orlando.ecommerce.entities.DTOs.ProductDTO;
+import com.orlando.ecommerce.entities.DTOs.ProductMinDTO;
 import com.orlando.ecommerce.entities.Product;
 import com.orlando.ecommerce.repositories.ProductRepository;
 
@@ -43,9 +44,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(Pageable pageable){
+    public Page<ProductMinDTO> findAll(Pageable pageable){
         Page<Product> page = productRepository.findAll(pageable);
-        return page.map(product -> mapper.map(product, ProductDTO.class));
+        return page.map(product -> mapper.map(product, ProductMinDTO.class));
     }
 
     @Transactional
