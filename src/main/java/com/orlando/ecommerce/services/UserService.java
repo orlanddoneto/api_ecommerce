@@ -1,14 +1,20 @@
 package com.orlando.ecommerce.services;
 
+import com.orlando.ecommerce.entities.DTOs.UserDTO;
 import com.orlando.ecommerce.entities.Role;
 import com.orlando.ecommerce.entities.User;
 import com.orlando.ecommerce.projections.UserDetailsProjection;
 import com.orlando.ecommerce.repositories.UserRepository;
+import com.orlando.ecommerce.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,5 +37,27 @@ public class UserService implements UserDetailsService {
             user_temp.addRole(new Role(obj.getAuthority(), obj.getRoleId()));
         }
         return user_temp;
+    }
+
+    protected User authenticated(){
+        try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
+            String username = jwtPrincipal.getClaim("username");
+
+            return repository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+        }
+
+        catch (Exception e){
+            throw new UsernameNotFoundException("Usuário não encontrado");
+        }
+
+
+    }
+
+    @Transactional(readOnly = true)
+    public UserDTO getMe(){
+        User user = authenticated();
+        return new UserDTO(user);
     }
 }
