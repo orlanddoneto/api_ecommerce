@@ -1,10 +1,14 @@
 package com.orlando.ecommerce.entities.DTOs;
 
 
+import com.orlando.ecommerce.entities.Category;
 import com.orlando.ecommerce.entities.Product;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDTO {
 
@@ -19,6 +23,8 @@ public class ProductDTO {
     private Double price;
     private String imgUrl;
 
+    @NotBlank(message = "Deve haver ao menos uma categoria")
+    private List<CategoryDTO> categories = new ArrayList<>();
 
     public ProductDTO() {
     }
@@ -29,6 +35,10 @@ public class ProductDTO {
         this.description = product.getDescription();
         this.price = product.getPrice();
         this.imgUrl = product.getImgUrl();
+        for (Category category : product.getCategories()){
+            CategoryDTO cat2 = new CategoryDTO(category);
+            categories.add(cat2);
+        }
     }
 
     public Long getId() {
@@ -69,5 +79,9 @@ public class ProductDTO {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public List<CategoryDTO> getCategories() {
+        return categories;
     }
 }

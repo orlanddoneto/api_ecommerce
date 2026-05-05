@@ -1,5 +1,7 @@
 package com.orlando.ecommerce.services;
 
+import com.orlando.ecommerce.entities.Category;
+import com.orlando.ecommerce.entities.DTOs.CategoryDTO;
 import com.orlando.ecommerce.entities.DTOs.ProductDTO;
 import com.orlando.ecommerce.entities.DTOs.ProductMinDTO;
 import com.orlando.ecommerce.entities.Product;
@@ -51,9 +53,10 @@ public class ProductService {
 
     @Transactional
     public ProductDTO insert(ProductDTO productDTO){
-        Product product = mapper.map(productDTO, Product.class);
+        Product product = new Product();
+        copyDtoToEntity(productDTO, product);
         product.setId(null);
-        return mapper.map(productRepository.save(product),ProductDTO.class);
+        return new ProductDTO(productRepository.save(product));
     }
 
     @Transactional
@@ -90,6 +93,14 @@ public class ProductService {
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
+        entity.getCategories().clear();
+
+        for (CategoryDTO cat : dto.getCategories()){
+            Category category = new Category();
+            category.setId(cat.getId());
+            entity.getCategories().add(category);
+
+        }
     }
 
 
