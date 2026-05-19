@@ -19,7 +19,7 @@ import java.net.URI;
 
 
 @RestController
-@RequestMapping(value = "/order")
+@RequestMapping(value = "/orders")
 public class OrderController {
 
     @Autowired
@@ -30,6 +30,14 @@ public class OrderController {
     public ResponseEntity<OrderDTO> getById(@PathVariable Long id) {
         OrderDTO orderDTO = orderService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(orderDTO);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CLIENT')")
+    @PostMapping
+    public ResponseEntity<OrderDTO> insert (@RequestBody @Valid OrderDTO orderDTO){
+        OrderDTO dto = orderService.insert(orderDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 
 

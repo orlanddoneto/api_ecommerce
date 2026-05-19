@@ -3,6 +3,7 @@ package com.orlando.ecommerce.entities.DTOs;
 import com.orlando.ecommerce.entities.Order;
 import com.orlando.ecommerce.entities.OrderItem;
 import com.orlando.ecommerce.entities.enums.OrderStatus;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class OrderDTO {
 
     private ClientDTO client;
     private PaymentDTO payment;
+
+    @NotEmpty(message = "Deve ter ao menos um item.")
     private List<OrderItemDTO> items = new ArrayList<>();
 
     public OrderDTO(Long id, Instant moment, OrderStatus status, ClientDTO client, PaymentDTO payment) {
@@ -35,6 +38,8 @@ public class OrderDTO {
             items.add(new OrderItemDTO(item));
         }
     }
+
+    public OrderDTO(){}
 
     public Long getId() {
         return id;

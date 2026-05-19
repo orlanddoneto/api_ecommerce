@@ -75,6 +75,26 @@ public class Order {
         return orderItems.stream().map(x -> x.getProduct()).collect(Collectors.toSet());
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setMoment(Instant moment) {
+        this.moment = moment;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
