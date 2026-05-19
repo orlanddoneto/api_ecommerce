@@ -12,15 +12,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Entity
 @Table(name = "tb_order")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant moment;
@@ -36,6 +34,42 @@ public class Order {
 
     @OneToMany(mappedBy = "id.order")
     private Set<OrderItem> orderItems = new HashSet<>();
+
+    public Order(long id, Instant moment, OrderStatus status, User user, Payment payment, Set<OrderItem> orderItems) {
+        this.id = id;
+        this.moment = moment;
+        this.status = status;
+        this.user = user;
+        this.payment = payment;
+        this.orderItems = orderItems;
+    }
+
+    public Order() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public Instant getMoment() {
+        return moment;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
+    }
 
     public Set<Product> getProducts() {
         return orderItems.stream().map(x -> x.getProduct()).collect(Collectors.toSet());

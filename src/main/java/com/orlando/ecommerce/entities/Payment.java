@@ -7,15 +7,13 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Entity
 @Table(name = "tb_payment")
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant moment;
@@ -23,6 +21,27 @@ public class Payment {
     @OneToOne
     @MapsId
     private Order order;
+
+    public Payment(long id, Instant moment, Order order) {
+        this.id = id;
+        this.moment = moment;
+        this.order = order;
+    }
+
+    public Payment() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public Instant getMoment() {
+        return moment;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
 
     @Override
     public boolean equals(Object o) {

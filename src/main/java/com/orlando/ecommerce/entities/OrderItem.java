@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
-@Data
-@NoArgsConstructor
+
 @Entity
 @Table(name = "tb_order_item")
 public class OrderItem {
@@ -27,6 +26,8 @@ public class OrderItem {
         this.price = price;
     }
 
+    public OrderItem(){}
+
     public Product getProduct(){
         return id.getProduct();
     }
@@ -41,6 +42,18 @@ public class OrderItem {
 
     public void setOrder(Order order){
         id.setOrder(order);
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public OrderItemPK getId() {
+        return id;
     }
 
     @Override
