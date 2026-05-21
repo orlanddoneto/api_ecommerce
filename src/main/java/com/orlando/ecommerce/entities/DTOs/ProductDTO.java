@@ -3,9 +3,7 @@ package com.orlando.ecommerce.entities.DTOs;
 
 import com.orlando.ecommerce.entities.Category;
 import com.orlando.ecommerce.entities.Product;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +17,12 @@ public class ProductDTO {
     @Size(min = 10, message = "A descrição deve ter no mínimo 10 caracteres.")
     @NotBlank(message = "O campo é obrigatório.")
     private String description;
+    @NotNull(message = "Campo requerido")
     @Positive(message = "O preço deve ser positivo")
     private Double price;
     private String imgUrl;
 
-    @NotBlank(message = "Deve haver ao menos uma categoria")
+    @NotEmpty(message = "Deve haver ao menos uma categoria")
     private List<CategoryDTO> categories = new ArrayList<>();
 
     public ProductDTO() {
