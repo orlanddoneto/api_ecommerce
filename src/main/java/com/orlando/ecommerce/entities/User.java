@@ -55,15 +55,6 @@ public class User implements UserDetails {
         roles.add(role);
     }
 
-    public boolean hasRole(String roleName){
-        for (Role role: roles){
-            if (roleName.equals(role.getAuthority())){
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -154,5 +145,14 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean hasRole(String roleName){
+        for (Role role : roles){
+            if (role.getAuthority().equals(roleName)){
+                return true;
+            }
+        }
+        return false;
     }
 }

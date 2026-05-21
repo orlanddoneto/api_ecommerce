@@ -3,6 +3,7 @@ package com.orlando.ecommerce.controllers.handlers;
 import com.orlando.ecommerce.entities.DTOs.CustomError;
 import com.orlando.ecommerce.entities.DTOs.ValidationError;
 import com.orlando.ecommerce.services.exceptions.DatabaseException;
+import com.orlando.ecommerce.services.exceptions.ForbiddenException;
 import com.orlando.ecommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -53,6 +54,18 @@ public class GlobalExceptionHandler {
        for (FieldError obj : e.getBindingResult().getFieldErrors()){
            err.addError(obj.getField(),obj.getDefaultMessage());
        }
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<CustomError> forbidden( ForbiddenException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        CustomError err = new CustomError(
+                Instant.now(),
+                status.value(),
+                e.getMessage(),
+                request.getRequestURI()
+        );
         return ResponseEntity.status(status).body(err);
     }
 }
